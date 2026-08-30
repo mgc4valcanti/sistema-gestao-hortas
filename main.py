@@ -10,9 +10,16 @@ class Horta(BaseModel):
     area: float
 
 
+class NovaHorta(BaseModel):
+    nome: str
+    localizacao: str
+    responsavel: str
+    area: float
+
+
 app = FastAPI(
     title="Sistema de Gestão de Hortas Comunitárias",
-    description="API REST para consulta de hortas comunitárias.",
+    description="API REST para consulta e cadastro de hortas comunitárias.",
     version="1.0.0",
 )
 
@@ -46,6 +53,15 @@ hortas = [
 def listar_hortas() -> list[Horta]:
     """Retorna todas as hortas comunitárias cadastradas em memória."""
     return hortas
+
+
+@app.post("/api/hortas", response_model=Horta, status_code=201)
+def cadastrar_horta(nova_horta: NovaHorta) -> Horta:
+    """Cadastra uma nova horta comunitária na lista em memória."""
+    proximo_id = max((horta.id for horta in hortas), default=0) + 1
+    horta = Horta(id=proximo_id, **nova_horta.model_dump())
+    hortas.append(horta)
+    return horta
 
 
 if __name__ == "__main__":

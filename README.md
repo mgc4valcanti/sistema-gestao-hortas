@@ -1,6 +1,6 @@
 # Sistema de Gestão de Hortas Comunitárias
 
-API REST em Python e FastAPI para consultar hortas comunitárias. Os dados são
+API REST em Python e FastAPI para consultar e cadastrar hortas comunitárias. Os dados são
 armazenados em memória e reiniciados sempre que a aplicação é encerrada.
 
 ## Requisitos
@@ -19,7 +19,7 @@ python main.py
 A aplicação fica disponível em `http://localhost:8080` e a documentação
 interativa do FastAPI em `http://localhost:8080/docs`.
 
-## Endpoint
+## Endpoints
 
 ### `GET /api/hortas`
 
@@ -43,8 +43,62 @@ Exemplo de resposta:
 ]
 ```
 
+### `POST /api/hortas`
+
+Cadastra uma nova horta na mesma lista em memória consultada pelo endpoint
+`GET /api/hortas`. O campo `id` é gerado automaticamente pela aplicação.
+
+Exemplo de requisição:
+
+```bash
+curl -X POST http://localhost:8080/api/hortas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Horta Sol Nascente",
+    "localizacao": "Bairro Primavera",
+    "responsavel": "Carlos Souza",
+    "area": 180.5
+  }'
+```
+
+JSON enviado na requisição:
+
+```json
+{
+  "nome": "Horta Sol Nascente",
+  "localizacao": "Bairro Primavera",
+  "responsavel": "Carlos Souza",
+  "area": 180.5
+}
+```
+
+Em caso de sucesso, a API retorna o status HTTP `201 Created` e os dados da
+horta cadastrada, incluindo o `id` gerado:
+
+```json
+{
+  "id": 4,
+  "nome": "Horta Sol Nascente",
+  "localizacao": "Bairro Primavera",
+  "responsavel": "Carlos Souza",
+  "area": 180.5
+}
+```
+
 Também é possível iniciar diretamente com o Uvicorn:
 
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8080
 ```
+
+## Workflow de desenvolvimento
+
+O workflow adotado neste projeto foi o **GitHub Flow**, por ser simples, leve e
+adequado para um projeto universitário. A branch `main` representa a versão
+estável do sistema. Cada nova funcionalidade é desenvolvida separadamente em
+uma branch de feature e, depois de revisada, é integrada à `main` por meio de
+um Pull Request.
+
+Essa abordagem foi escolhida porque facilita a organização das alterações,
+permite revisar o código antes da integração e reduz o risco de afetar a versão
+estável durante o desenvolvimento.
