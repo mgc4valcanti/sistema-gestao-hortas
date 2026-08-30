@@ -46,7 +46,7 @@ Exemplo de resposta:
 ### `POST /api/hortas`
 
 Cadastra uma nova horta na mesma lista em memória consultada pelo endpoint
-`GET /api/hortas`. O campo `id` é gerado automaticamente pela aplicação.
+`POST /api/hortas`. O campo `id` é gerado automaticamente pela aplicação.
 
 Exemplo de requisição:
 
