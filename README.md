@@ -85,6 +85,62 @@ horta cadastrada, incluindo o `id` gerado:
 }
 ```
 
+### `PUT /api/hortas/{id}`
+
+Atualiza os dados de uma horta comunitária existente na memória a partir do seu identificador (`id`).
+
+Exemplo de requisição:
+
+```bash
+curl -X PUT http://localhost:8080/api/hortas/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Horta Comunitária Esperança Renovada",
+    "localizacao": "Bairro Jardim das Flores",
+    "responsavel": "Maria Silva",
+    "area": 500.0
+  }'
+```
+
+JSON enviado na requisição:
+
+```json
+{
+  "nome": "Horta Comunitária Esperança Renovada",
+  "localizacao": "Bairro Jardim das Flores",
+  "responsavel": "Maria Silva",
+  "area": 500.0
+}
+```
+
+Em caso de sucesso:
+
+- **`200 OK`**: A horta é atualizada com sucesso na memória e a API retorna os dados atualizados:
+
+```json
+{
+  "id": 1,
+  "nome": "Horta Comunitária Esperança Renovada",
+  "localizacao": "Bairro Jardim das Flores",
+  "responsavel": "Maria Silva",
+  "area": 500.0
+}
+```
+
+Em casos de erro:
+
+- **`404 Not Found` (Horta não encontrada)**: Retornado quando não existe horta cadastrada com o `id` informado.
+
+Exemplo de resposta (`404`):
+
+```json
+{
+  "detail": "Horta não encontrada"
+}
+```
+
+- **`422 Unprocessable Content` (Erro de Validação)**: Retornado quando o payload enviado possui campos obrigatórios ausentes ou tipos incompatíveis.
+
 Também é possível iniciar diretamente com o Uvicorn:
 
 ```bash

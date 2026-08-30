@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 
@@ -62,6 +62,17 @@ def cadastrar_horta(nova_horta: NovaHorta) -> Horta:
     horta = Horta(id=proximo_id, **nova_horta.model_dump())
     hortas.append(horta)
     return horta
+
+
+@app.put("/api/hortas/{horta_id}", response_model=Horta)
+def atualizar_horta(horta_id: int, dados_horta: NovaHorta) -> Horta:
+    """Atualiza os dados de uma horta comunitária cadastrada em memória."""
+    for i, horta in enumerate(hortas):
+        if horta.id == horta_id:
+            horta_atualizada = Horta(id=horta_id, **dados_horta.model_dump())
+            hortas[i] = horta_atualizada
+            return horta_atualizada
+    raise HTTPException(status_code=404, detail="Horta não encontrada")
 
 
 if __name__ == "__main__":
