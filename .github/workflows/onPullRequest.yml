@@ -10,19 +10,55 @@ jobs:
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - name: Set up do Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: Instalação de dependências
+      - name: Criar ambiente virtual e instalar dependências
         run: |
+          python -m venv .venv
+          source .venv/bin/activate
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Salvar ambiente virtual como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-env
+          path: .venv/
+          retention-days: 1
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up do Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Baixar ambiente virtual salvo
+        uses: actions/download-artifact@v4
+        with:
+          name: python-env
+          path: .venv/
+
       - name: Execução dos testes
-        run: pytest
+        run: |
+          source .venv/bin/activate
+          pytest
 
       - name: Verificação da cobertura
-        run: pytest --cov=main --cov-report=term-missing --cov-fail-under=90
+        run: |
+          source .venv/bin/activate
+          pytest --cov=main --cov-report=term-missing --cov-fail-under=90
