@@ -134,3 +134,38 @@ def test_execucao_direta_inicia_uvicorn(monkeypatch):
     args, kwargs = chamadas[0]
     assert args[0].title == main.app.title
     assert kwargs == {"host": "0.0.0.0", "port": 8080}
+
+
+def test_cadastrar_horta_com_ids_nao_ordenados(monkeypatch):
+    hortas = [
+        main.Horta(id=10, nome="Horta Dez", localizacao="L", responsavel="R", area=50.0),
+        main.Horta(id=2, nome="Horta Dois", localizacao="L", responsavel="R", area=60.0),
+    ]
+    monkeypatch.setattr(main, "hortas", hortas)
+    nova_horta = main.NovaHorta(nome="Nova", localizacao="L", responsavel="R", area=70.0)
+
+    resultado = main.cadastrar_horta(nova_horta)
+
+    assert resultado.id == 11
+    assert len(hortas) == 3
+
+
+def test_modelos_pydantic_validam_tipos_invalidos():
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        main.NovaHorta(
+            nome="Horta Invalida",
+            localizacao="Local",
+            responsavel="Resp",
+            area="nao-eh-numero",
+        )
+
+    with pytest.raises(ValidationError):
+        main.Horta(
+            id="invalido",
+            nome="Horta Invalida",
+            localizacao="Local",
+            responsavel="Resp",
+            area=100.0,
+        )
