@@ -54,6 +54,9 @@ jobs:
           name: python-env
           path: .venv/
 
+      - name: Restaurar permissões de execução
+        run: chmod -R +x .venv/bin/
+
       - name: Execução dos testes
         run: |
           source .venv/bin/activate
