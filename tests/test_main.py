@@ -70,6 +70,20 @@ def test_cadastrar_horta_inicia_id_em_um_quando_lista_vazia(monkeypatch):
     assert hortas == [resultado]
 
 
+def test_recuperar_horta_retorna_horta_existente(hortas_isoladas):
+    resultado = main.recuperar_horta(1)
+
+    assert resultado == hortas_isoladas[0]
+
+
+def test_recuperar_horta_lanca_404_para_id_inexistente(hortas_isoladas):
+    with pytest.raises(HTTPException) as erro:
+        main.recuperar_horta(99)
+
+    assert erro.value.status_code == 404
+    assert erro.value.detail == "Horta não encontrada"
+
+
 def test_atualizar_horta_substitui_horta_existente(hortas_isoladas):
     dados_horta = main.NovaHorta(
         nome="Horta Atualizada",
