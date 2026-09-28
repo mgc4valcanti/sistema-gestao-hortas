@@ -85,6 +85,42 @@ horta cadastrada, incluindo o `id` gerado:
 }
 ```
 
+### `GET /api/hortas/{id}`
+
+Retorna os dados de uma horta comunitária específica existente na memória a partir do seu identificador (`id`).
+
+Exemplo de requisição:
+
+```bash
+curl http://localhost:8080/api/hortas/1
+```
+
+Em caso de sucesso:
+
+- **`200 OK`**: A API retorna os dados da horta encontrada:
+
+```json
+{
+  "id": 1,
+  "nome": "Horta Comunitária Esperança",
+  "localizacao": "Bairro Jardim das Flores",
+  "responsavel": "Maria Silva",
+  "area": 450.0
+}
+```
+
+Em casos de erro:
+
+- **`404 Not Found` (Horta não encontrada)**: Retornado quando não existe horta cadastrada com o `id` informado.
+
+Exemplo de resposta (`404`):
+
+```json
+{
+  "detail": "Horta não encontrada"
+}
+```
+
 ### `PUT /api/hortas/{id}`
 
 Atualiza os dados de uma horta comunitária existente na memória a partir do seu identificador (`id`).

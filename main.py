@@ -64,6 +64,15 @@ def cadastrar_horta(nova_horta: NovaHorta) -> Horta:
     return horta
 
 
+@app.get("/api/hortas/{horta_id}", response_model=Horta)
+def recuperar_horta(horta_id: int) -> Horta:
+    """Retorna uma horta comunitária específica a partir do seu ID."""
+    for horta in hortas:
+        if horta.id == horta_id:
+            return horta
+    raise HTTPException(status_code=404, detail="Horta não encontrada")
+
+
 @app.put("/api/hortas/{horta_id}", response_model=Horta)
 def atualizar_horta(horta_id: int, dados_horta: NovaHorta) -> Horta:
     """Atualiza os dados de uma horta comunitária cadastrada em memória."""
