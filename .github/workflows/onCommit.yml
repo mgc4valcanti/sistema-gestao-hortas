@@ -30,6 +30,7 @@ jobs:
         with:
           name: python-env
           path: .venv/
+          include-hidden-files: true
           retention-days: 1
 
   test:
