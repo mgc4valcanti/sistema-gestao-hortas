@@ -1,6 +1,6 @@
 # Sistema de Gestão de Hortas Comunitárias
 
-API REST em Python e FastAPI para consultar e cadastrar hortas comunitárias. Os dados são
+API REST em Python e FastAPI para consultar, cadastrar, atualizar e deletar hortas comunitárias. Os dados são
 armazenados em memória e reiniciados sempre que a aplicação é encerrada.
 
 ## Requisitos
@@ -176,6 +176,32 @@ Exemplo de resposta (`404`):
 ```
 
 - **`422 Unprocessable Content` (Erro de Validação)**: Retornado quando o payload enviado possui campos obrigatórios ausentes ou tipos incompatíveis.
+
+### `DELETE /api/hortas/{id}`
+
+Remove uma horta comunitária cadastrada em memória a partir do seu identificador (`id`).
+
+Exemplo de requisição:
+
+```bash
+curl -X DELETE http://localhost:8080/api/hortas/1
+```
+
+Em caso de sucesso:
+
+- **`204 No Content`**: A horta é removida com sucesso da memória e a API não retorna conteúdo no corpo da resposta.
+
+Em casos de erro:
+
+- **`404 Not Found` (Horta não encontrada)**: Retornado quando não existe horta cadastrada com o `id` informado.
+
+Exemplo de resposta (`404`):
+
+```json
+{
+  "detail": "Horta não encontrada"
+}
+```
 
 Também é possível iniciar diretamente com o Uvicorn:
 

@@ -120,6 +120,24 @@ def test_atualizar_horta_lanca_404_para_id_inexistente(hortas_isoladas):
     assert len(hortas_isoladas) == 2
 
 
+def test_deletar_horta_remove_horta_existente(hortas_isoladas):
+    resultado = main.deletar_horta(1)
+
+    assert resultado.status_code == 204
+    assert len(hortas_isoladas) == 1
+    assert hortas_isoladas[0].id == 3
+    assert all(horta.id != 1 for horta in hortas_isoladas)
+
+
+def test_deletar_horta_lanca_404_para_id_inexistente(hortas_isoladas):
+    with pytest.raises(HTTPException) as erro:
+        main.deletar_horta(99)
+
+    assert erro.value.status_code == 404
+    assert erro.value.detail == "Horta não encontrada"
+    assert len(hortas_isoladas) == 2
+
+
 def test_execucao_direta_inicia_uvicorn(monkeypatch):
     chamadas = []
 

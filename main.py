@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
 
 
@@ -81,6 +81,16 @@ def atualizar_horta(horta_id: int, dados_horta: NovaHorta) -> Horta:
             horta_atualizada = Horta(id=horta_id, **dados_horta.model_dump())
             hortas[i] = horta_atualizada
             return horta_atualizada
+    raise HTTPException(status_code=404, detail="Horta não encontrada")
+
+
+@app.delete("/api/hortas/{horta_id}", status_code=204)
+def deletar_horta(horta_id: int) -> Response:
+    """Remove uma horta comunitária cadastrada em memória a partir do seu ID."""
+    for i, horta in enumerate(hortas):
+        if horta.id == horta_id:
+            del hortas[i]
+            return Response(status_code=204)
     raise HTTPException(status_code=404, detail="Horta não encontrada")
 
 
