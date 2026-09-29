@@ -1,0 +1,19 @@
+# Configurações padrão do Ruff para reforçar estilo e qualidade de código Python
+target-version = "py311"
+line-length = 88
+
+[lint]
+select = [
+    "E",   # pycodestyle erros
+    "W",   # pycodestyle avisos
+    "F",   # Pyflakes
+    "I",   # isort (ordenação de importações)
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade (sintaxe moderna)
+    "C4",  # flake8-comprehensions
+]
+ignore = []
+
+[format]
+quote-style = "double"
+indent-style = "space"
