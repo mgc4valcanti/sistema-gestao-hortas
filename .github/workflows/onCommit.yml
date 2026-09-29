@@ -31,7 +31,7 @@ jobs:
           include-hidden-files: true
           retention-days: 1
 
-  test:
+  qualityAssurance:
     runs-on: ubuntu-latest
     needs: build
 
@@ -42,7 +42,7 @@ jobs:
       - name: Set up do Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Baixar ambiente virtual salvo
         uses: actions/download-artifact@v4
@@ -52,6 +52,12 @@ jobs:
 
       - name: Restaurar permissões de execução
         run: chmod -R +x .venv/bin/
+
+      - name: Execução do linter (Ruff)
+        run: |
+          source .venv/bin/activate
+          ruff check .
+          ruff format --check .
 
       - name: Execução dos testes
         run: |

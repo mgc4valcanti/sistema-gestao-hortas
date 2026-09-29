@@ -74,7 +74,9 @@ def test_post_cadastrar_horta_retorna_201_com_dados_e_id_gerado(client_com_horta
     assert len(hortas) == 3
 
 
-def test_post_cadastrar_horta_retorna_422_quando_faltam_campos_obrigatorios(client_com_hortas):
+def test_post_cadastrar_horta_retorna_422_quando_faltam_campos_obrigatorios(
+    client_com_hortas,
+):
     client, hortas = client_com_hortas
     payload_incompleto = {
         "nome": "Horta Sem Area",
