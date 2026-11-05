@@ -68,3 +68,21 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest --cov=main --cov-report=term-missing --cov-fail-under=90
+
+  dockerBuild:
+    runs-on: ubuntu-latest
+    needs: qualityAssurance
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Construir imagem Docker (validação de build)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: hortas:test
